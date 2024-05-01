@@ -1,0 +1,3 @@
+isConsoleLogger: true
+helloMessage: "Hello! I'm a bot for sticker searching. Just use an inline query, and I'll try to find a sticker with such text for you. You can add new sticker packs to the bot using commands."
+# logFilePath: "path"
