@@ -25,6 +25,8 @@ func (b *Bot) Message(message *echotron.Message) {
 		answer = b.Help(b.app.HelpMessage)
 	case "feed":
 		answer = b.FeedPackByName(message.From.ID, cmd.Params...)
+	case "set_ocr_key":
+		answer = b.SetOCRKey(message.From.ID, cmd.Params...)
 	}
 
 	if answer != "" {
