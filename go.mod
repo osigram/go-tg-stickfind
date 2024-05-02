@@ -4,8 +4,10 @@ go 1.22
 
 require (
 	cloud.google.com/go/vision v1.2.0
+	cloud.google.com/go/vision/v2 v2.8.2
 	github.com/NicoNex/echotron/v3 v3.29.0
 	github.com/gookit/config/v2 v2.2.5
+	google.golang.org/api v0.177.0
 )
 
 require (
@@ -14,7 +16,6 @@ require (
 	cloud.google.com/go/auth/oauth2adapt v0.2.2 // indirect
 	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	cloud.google.com/go/longrunning v0.5.6 // indirect
-	cloud.google.com/go/vision/v2 v2.8.2 // indirect
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/fatih/color v1.14.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -47,7 +48,6 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/api v0.177.0 // indirect
 	google.golang.org/genproto v0.0.0-20240401170217-c3f982113cda // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240429193739-8cf5692501f6 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240429193739-8cf5692501f6 // indirect

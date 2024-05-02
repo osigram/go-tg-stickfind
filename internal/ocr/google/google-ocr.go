@@ -2,10 +2,13 @@ package google
 
 import (
 	"bytes"
-	vision "cloud.google.com/go/vision/apiv1"
+	oldvision "cloud.google.com/go/vision/apiv1"
+	vision "cloud.google.com/go/vision/v2/apiv1"
+	"cloud.google.com/go/vision/v2/apiv1/visionpb"
 	"context"
 	"fmt"
 	"go-tg-stickfind/internal/ocr"
+	"google.golang.org/api/option"
 	"strings"
 )
 
@@ -21,25 +24,36 @@ func (o *OCR) ParseImage(imageBytes []byte, _, _ int) (string, error) {
 	ctx := context.Background()
 
 	// Creates a client.
-	client, err := vision.NewImageAnnotatorClient(ctx)
+	client, err := vision.NewImageAnnotatorRESTClient(ctx, option.WithAPIKey(o.Key))
 	if err != nil {
 		return "", fmt.Errorf("failed to create google ocr client: %w", err)
 	}
 	defer client.Close()
 
-	image, err := vision.NewImageFromReader(bytes.NewReader(imageBytes))
+	image, err := oldvision.NewImageFromReader(bytes.NewReader(imageBytes))
 	if err != nil {
 		return "", fmt.Errorf("failed to read image: %w", err)
 	}
 
-	labels, err := client.DetectTexts(ctx, image, nil, 10)
+	resp, err := client.BatchAnnotateImages(ctx, &visionpb.BatchAnnotateImagesRequest{
+		Requests: []*visionpb.AnnotateImageRequest{{
+			Image:        image,
+			Features:     []*visionpb.Feature{{Type: visionpb.Feature_TEXT_DETECTION, MaxResults: 10}},
+			ImageContext: nil,
+		}},
+	},
+	)
 	if err != nil {
 		return "", fmt.Errorf("failed to detect labels: %w", err)
 	}
 
-	texts := make([]string, 0, len(labels))
-	for _, label := range labels {
-		texts = append(texts, label.Description)
+	var texts []string
+	for _, response := range resp.Responses {
+		if response.Error != nil {
+			for _, annotations := range response.TextAnnotations {
+				texts = append(texts, annotations.Description)
+			}
+		}
 	}
 
 	return strings.Join(texts, "\n"), nil
