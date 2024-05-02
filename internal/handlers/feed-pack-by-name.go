@@ -2,14 +2,19 @@ package handlers
 
 import (
 	"fmt"
-	"go-tg-stickfind/internal/ocr"
 	"log/slog"
 	"strings"
 )
 
-func (b *Bot) FeedPackByName(ocr ocr.OCR, packs ...string) string {
+func (b *Bot) FeedPackByName(userID int64, packs ...string) string {
 	l := b.app.Logger.With(slog.String("op", "internal.handlers.FeedPackByName"))
 	var answers []string
+
+	ocr, err := b.app.GetOCR(userID)
+	if err != nil {
+		l.Error("Error to get ocr", slog.String("error", err.Error()))
+		return "Check, please, your OCR settings."
+	}
 
 	for _, stickerPackName := range packs {
 		pack, err := b.app.GetStickerSet(stickerPackName)

@@ -60,8 +60,8 @@ func (b *Bot) parseSticker(sticker *echotron.Sticker, ocr ocr.OCR) error {
 	}
 
 	if err := b.app.Storage.SetSticker(models.Sticker{
-		StickerID: sticker.FileID,
-		Text:      text,
+		FileID: sticker.FileID,
+		Text:   text,
 	}); err != nil {
 		return &StickerParsingErr{
 			StickerUniqueID: sticker.FileUniqueID,
