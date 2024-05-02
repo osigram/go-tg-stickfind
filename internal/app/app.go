@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/NicoNex/echotron/v3"
 	"go-tg-stickfind/internal/handlers"
+	"go-tg-stickfind/internal/ocr"
 	"go-tg-stickfind/internal/storage"
 	"log/slog"
 	"time"
@@ -13,15 +14,23 @@ type App struct {
 	HelpMessage string
 	token       string
 	Storage     storage.Storage
+	OCRGetter   ocr.Getter
 	echotron.API
 }
 
-func NewApp(logger *slog.Logger, storage storage.Storage, helpMessage string, token string) *App {
+func NewApp(
+	logger *slog.Logger,
+	storage storage.Storage,
+	helpMessage string,
+	token string,
+	ocrGetter ocr.Getter,
+) *App {
 	return &App{
 		Logger:      logger,
 		Storage:     storage,
 		HelpMessage: helpMessage,
 		API:         echotron.NewAPI(token),
+		OCRGetter:   ocrGetter,
 		token:       token,
 	}
 }

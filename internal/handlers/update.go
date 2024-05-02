@@ -18,12 +18,18 @@ func (b *Bot) Update(update *echotron.Update) {
 		return
 	}
 
+	ocr, err := b.app.GetOCR(update.Message.From.ID)
+	if err != nil {
+		l.Error("Error to get ocr", slog.String("error", err.Error()))
+		return
+	}
+
 	var answer string
 	switch cmd.Command {
 	case "start", "help":
 		answer = b.Help(b.app.HelpMessage)
 	case "feed":
-		answer = b.FeedPackByName(cmd.Params...)
+		answer = b.FeedPackByName(ocr, cmd.Params...)
 	}
 
 	if answer != "" {

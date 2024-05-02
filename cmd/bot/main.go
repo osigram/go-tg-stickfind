@@ -4,7 +4,6 @@ import (
 	"go-tg-stickfind/internal/app"
 	"go-tg-stickfind/internal/config"
 	"go-tg-stickfind/internal/log"
-	"go-tg-stickfind/internal/storage/storagemock"
 )
 
 func main() {
@@ -15,13 +14,12 @@ func main() {
 	defer writeCloser.Close()
 	logger.Info("Logger initialized")
 
-	// Storage
+	// TODO: Storage
 	logger.Info("Initializing storage...")
-	storage := storagemock.NewStorageMock()
 
 	// App
 	logger.Info("Initializing app...")
-	botApp := app.NewApp(logger, storage, cfg.HelloMessage, cfg.Token)
+	botApp := app.NewApp(logger, _, cfg.HelloMessage, cfg.Token)
 
 	// Start bot
 	logger.Info("Starting bot...")

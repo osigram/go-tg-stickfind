@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"fmt"
+	"go-tg-stickfind/internal/ocr"
 	"log/slog"
 	"strings"
 )
 
-func (b *Bot) FeedPackByName(packs ...string) string {
+func (b *Bot) FeedPackByName(ocr ocr.OCR, packs ...string) string {
 	l := b.app.Logger.With(slog.String("op", "internal.handlers.FeedPackByName"))
 	var answers []string
 
@@ -26,9 +27,9 @@ func (b *Bot) FeedPackByName(packs ...string) string {
 			continue
 		}
 
-		if err := b.parseStickerPack(pack.Result); err != nil {
+		if err := b.parseStickerPack(pack.Result, ocr); err != nil {
 			answers = append(answers, fmt.Sprintf("Error while parsing sticker pack: %v.", stickerPackName))
-			l.Debug("Error while parsing sticker pack", slog.String("error", err.Error()), slog.String("stickerPackName", stickerPackName))
+			l.Error("Error while parsing sticker pack", slog.String("error", err.Error()), slog.String("stickerPackName", stickerPackName))
 		}
 	}
 
