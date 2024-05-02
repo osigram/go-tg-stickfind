@@ -32,6 +32,10 @@ func (b *Bot) parseStickerPack(pack *echotron.StickerSet, ocr ocr.OCR) error {
 }
 
 func (b *Bot) parseSticker(sticker *echotron.Sticker, ocr ocr.OCR) error {
+	if _, err := b.app.Storage.FindSticker(sticker.FileUniqueID); err == nil {
+		return nil
+	}
+
 	file, err := b.app.GetFile(sticker.FileID)
 	if err != nil || !file.Ok {
 		return &StickerParsingErr{
@@ -60,6 +64,7 @@ func (b *Bot) parseSticker(sticker *echotron.Sticker, ocr ocr.OCR) error {
 	}
 
 	if err := b.app.Storage.SetSticker(models.Sticker{
+		ID:     sticker.FileUniqueID,
 		FileID: sticker.FileID,
 		Text:   text,
 	}); err != nil {
