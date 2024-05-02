@@ -1,6 +1,7 @@
 package models
 
 type Sticker struct {
-	StickerID string
-	Text      string
+	ID     string
+	FileID string
+	Text   string
 }
