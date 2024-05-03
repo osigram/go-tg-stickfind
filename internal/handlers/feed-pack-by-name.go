@@ -25,7 +25,7 @@ func (b *Bot) FeedPackByName(userID int64, packs ...string) string {
 			continue
 		}
 
-		if !pack.Ok || pack.Result.IsAnimated || pack.Result.IsVideo || pack.Result.StickerType != "regular" {
+		if !pack.Ok || pack.Result.IsAnimated || pack.Result.StickerType != "regular" {
 			l.Debug("Sticker pack is not static", slog.String("stickerPackName", stickerPackName))
 			answers = append(answers, fmt.Sprintf("Sticker pack %v is not regular.", stickerPackName))
 

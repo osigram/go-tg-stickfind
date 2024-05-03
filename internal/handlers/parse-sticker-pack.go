@@ -36,7 +36,12 @@ func (b *Bot) parseSticker(sticker *echotron.Sticker, ocr ocr.OCR) error {
 		return nil
 	}
 
-	file, err := b.app.GetFile(sticker.FileID)
+	fileToDownloadID := sticker.FileID
+	if sticker.Thumbnail != nil {
+		fileToDownloadID = sticker.Thumbnail.FileID
+	}
+
+	file, err := b.app.GetFile(fileToDownloadID)
 	if err != nil || !file.Ok {
 		return &StickerParsingErr{
 			StickerUniqueID: sticker.FileUniqueID,
