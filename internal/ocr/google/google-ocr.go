@@ -49,12 +49,10 @@ func (o *OCR) ParseImage(imageBytes []byte, _, _ int) (string, error) {
 
 	var texts []string
 	for _, response := range resp.Responses {
-		if response.Error != nil {
-			for _, annotations := range response.TextAnnotations {
-				texts = append(texts, annotations.Description)
-			}
+		if response.FullTextAnnotation != nil {
+			texts = append(texts, response.FullTextAnnotation.Text)
 		}
 	}
 
-	return strings.Join(texts, "\n"), nil
+	return strings.ToLower(strings.Join(texts, "\n")), nil
 }
