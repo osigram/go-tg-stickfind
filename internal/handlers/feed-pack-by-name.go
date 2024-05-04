@@ -32,11 +32,19 @@ func (b *Bot) FeedPackByName(userID int64, packs ...string) string {
 			continue
 		}
 
+		if err = b.app.Storage.ProcessOCRUsage(userID, len(pack.Result.Stickers)); err != nil {
+			l.Error("Error to process OCR usage", slog.String("error", err.Error()))
+			answers = append(answers, fmt.Sprintf("Error to process OCR usage for pack: %v.", stickerPackName))
+
+			continue
+		}
+
 		if err := b.parseStickerPack(pack.Result, ocr); err != nil {
 			answers = append(answers, fmt.Sprintf("Error while parsing sticker pack: %v.", stickerPackName))
 			l.Error("Error while parsing sticker pack", slog.String("error", err.Error()), slog.String("stickerPackName", stickerPackName))
 		}
 	}
+	answers = append(answers, "Done.")
 
 	return strings.Join(answers, "\n")
 }
