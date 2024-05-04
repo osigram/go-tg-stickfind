@@ -8,7 +8,7 @@ import (
 
 func (b *Bot) Message(message *echotron.Message) {
 	l := b.app.Logger.With(
-		slog.String("op", "internal.handler.Message"),
+		slog.String("op", "internal.handlers.Message"),
 		slog.Int64("chatID", b.chatID),
 		slog.String("message", message.Text),
 	)
@@ -33,6 +33,8 @@ func (b *Bot) Message(message *echotron.Message) {
 		answer = b.FeedPackByName(message.From.ID, cmd.Params...)
 	case "set_ocr_key":
 		answer = b.SetOCRKey(message.From.ID, cmd.Params...)
+	case "ocr_usage":
+		answer = b.OCRUsage(message.From.ID)
 	}
 
 	if answer != "" {
