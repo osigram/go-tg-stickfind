@@ -13,6 +13,12 @@ func (b *Bot) Message(message *echotron.Message) {
 		slog.String("message", message.Text),
 	)
 
+	err := b.app.Storage.RegisterUserIfNot(message.From.ID)
+	if err != nil {
+		l.Error("Error to register user", slog.String("error", err.Error()))
+		return
+	}
+
 	cmd, err := models.NewInputCommand(message.Text)
 	if err != nil {
 		l.Debug("Error to parse command", slog.String("error", err.Error()))

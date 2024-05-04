@@ -9,5 +9,5 @@ type Storage interface {
 	SetUserKey(userID int64, key string) error
 	ProcessOCRUsage(userID int64, OCRUsage int) error
 	GetUser(userID int64) (*models.User, error)
-	RegisterUser(userID int64) error
+	RegisterUserIfNot(userID int64) error
 }
