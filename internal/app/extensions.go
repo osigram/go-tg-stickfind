@@ -15,10 +15,14 @@ func (app *App) SendTextReply(text string, chatID int64, replyID int) error {
 }
 
 func (app *App) GetOCR(userID int64) (ocr.OCR, error) {
-	key, err := app.Storage.GetUserKey(userID)
+	user, err := app.Storage.GetUser(userID)
 	if err != nil {
 		return nil, fmt.Errorf("error to get user ocr key: %v", err)
 	}
+	if user.Key == "" {
+		return nil, fmt.Errorf("user key is empty")
+	}
+	key := user.Key
 
 	ocrObject, err := app.OCRGetter(key)
 	if err != nil {

@@ -17,7 +17,7 @@ func (b *Bot) ProcessInlineQuery(query *echotron.InlineQuery) {
 		slog.String("query", query.Query),
 	)
 
-	stickers, err := b.app.Storage.FindStickers(query.Query, MaxStickers)
+	stickers, err := b.app.Storage.FindStickersByText(query.Query, MaxStickers)
 	if err != nil {
 		l.Error("Error to find stickers", slog.String("error", err.Error()))
 		return

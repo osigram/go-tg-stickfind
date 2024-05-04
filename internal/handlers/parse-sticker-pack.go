@@ -32,7 +32,7 @@ func (b *Bot) parseStickerPack(pack *echotron.StickerSet, ocr ocr.OCR) error {
 }
 
 func (b *Bot) parseSticker(sticker *echotron.Sticker, ocr ocr.OCR) error {
-	if _, err := b.app.Storage.FindSticker(sticker.FileUniqueID); err == nil {
+	if _, err := b.app.Storage.GetSticker(sticker.FileUniqueID); err == nil {
 		return nil
 	}
 
