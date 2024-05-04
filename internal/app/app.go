@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/NicoNex/echotron/v3"
-	"go-tg-stickfind/internal/handlers"
 	"go-tg-stickfind/internal/ocr"
 	"go-tg-stickfind/internal/storage"
 	"log/slog"
@@ -35,13 +34,9 @@ func NewApp(
 	}
 }
 
-func (app *App) newBot(chatId int64) echotron.Bot {
-	return handlers.NewBot(chatId, app)
-}
-
-func (app *App) Start() {
+func (app *App) Start(newBot echotron.NewBotFn) {
 	l := app.Logger.With("op", "app.Start")
-	dsp := echotron.NewDispatcher(app.token, app.newBot)
+	dsp := echotron.NewDispatcher(app.token, newBot)
 	for {
 		err := dsp.Poll()
 		if err != nil {
