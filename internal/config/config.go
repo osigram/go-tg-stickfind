@@ -16,15 +16,17 @@ var configPath = map[string]string{
 }
 
 var secrets = map[string]string{
-	"TOKEN": "token",
+	"TOKEN":             "token",
+	"CONNECTION_STRING": "connectionString",
 }
 
 type Config struct {
-	BuildMode       string `config:"buildMode" default:"dev"`
-	Token           string `config:"token"`
-	IsConsoleLogger bool   `config:"isConsoleLogger"`
-	HelloMessage    string `config:"helloMessage"`
-	LogFilePath     string `config:"logFilePath" default:""`
+	BuildMode        string `config:"buildMode" default:"dev"`
+	Token            string `config:"token"`
+	ConnectionString string `config:"connectionString"`
+	IsConsoleLogger  bool   `config:"isConsoleLogger"`
+	HelloMessage     string `config:"helloMessage"`
+	LogFilePath      string `config:"logFilePath" default:""`
 }
 
 func NewConfig() Config {
